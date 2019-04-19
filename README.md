@@ -1,2 +1,6 @@
 # esri2sf
-Scrape features from the ArcGIS REST API and return a geopandas GeoDataFrame
+
+A Python utility to scrape features from the ArcGIS Server REST API and return a geopandas GeoDataFrame
+python.
+
+Inspired by the R package [esri2sf](https://github.com/yonghah/esri2sf/).
