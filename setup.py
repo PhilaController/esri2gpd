@@ -13,8 +13,8 @@ def find_version(path):
 
 
 setup(
-    name="esri2sf",
-    version=find_version("esri2sf/__init__.py"),
+    name="esri2gpd",
+    version=find_version("esri2gpd/__init__.py"),
     author="Nick Hand",
     maintainer="Nick Hand",
     maintainer_email="nick.hand@phila.gov",
