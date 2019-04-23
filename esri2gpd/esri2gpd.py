@@ -2,6 +2,8 @@ import os
 import requests
 from arcgis2geojson import arcgis2geojson
 import geopandas as gpd
+import pandas as pd
+import numpy as np
 
 
 def _get_json_safely(response):
@@ -9,6 +11,10 @@ def _get_json_safely(response):
     Check for JSON response errors, and if all clear, 
     return the JSON data
     """
+    # bad status code
+    if response.status_code != 200:
+        reponse.raise_for_status()
+
     json = response.json()  # get the JSON
     if "error" in json:
         raise ValueError("Error: %s" % json["error"])
@@ -62,13 +68,25 @@ def get(url, fields=None, where=None, limit=None):
     if limit is not None:
         ids = ids[:limit]
 
-    # get raw features
-    params = dict(
-        objectIds=", ".join(map(str, ids)), f="json", outSR="4326", outFields=fields
-    )
-    response = requests.get(queryURL, params=params)
-    json = _get_json_safely(response)
+    # query in batches
+    out = []
+    batch_size = 250
+    for sub_ids in np.array_split(ids, len(ids) // batch_size + 1):
 
-    # convert to GeoJSON and return
-    geojson = [arcgis2geojson(f) for f in json["features"]]
-    return gpd.GeoDataFrame.from_features(geojson, crs={"init": "epsg:4326"})
+        # params for this request
+        params = dict(
+            objectIds=", ".join(map(str, sub_ids)),
+            f="json",
+            outSR="4326",
+            outFields=fields,
+        )
+
+        # get raw features
+        response = requests.get(queryURL, params=params)
+        json = _get_json_safely(response)
+
+        # convert to GeoJSON and save
+        geojson = [arcgis2geojson(f) for f in json["features"]]
+        out.append(gpd.GeoDataFrame.from_features(geojson, crs={"init": "epsg:4326"}))
+
+    return pd.concat(out, axis=0).reset_index(drop=True)
