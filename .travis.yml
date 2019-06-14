@@ -21,7 +21,6 @@ before_install:
   - conda update --yes conda
 install:
   - conda install --yes python=$TRAVIS_PYTHON_VERSION conda-build jinja2 anaconda-client
-  - conda install -c conda-forge --yes --file requirements.txt
   - pip install .[dev]
 script:
   - py.test . --cov esri2gpd
