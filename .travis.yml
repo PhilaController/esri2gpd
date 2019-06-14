@@ -28,17 +28,18 @@ after_success:
   - coveralls
   - chmod +x deploy_anaconda.sh
 deploy:
-  matrix:
-    - provider: pypi
-      distributions: sdist
-      user: controllerphl
-      password:
-        secure: PF3np0g8Mt9EFs56pJKv128YsrSukStAfwC0qjVZgwJejf2Yt8Bl8TR2jDghUAO+Aaeu7j5oOoRDfw6z2/GuO0iV/vwH/cfvxUnNdI9TsjzKWvm7RLubyHdW/LrzbPwXnz+1gQy6cJ+5OxCL9m9CFECz7J2nnHmOtD4ri8+5oStGfQcMvigIUvISbdCaM2XDtfoVdOZ9F/ukRNaKSdXC0FT5eDwiaj6SrCFhPSIEbBG+LuZODhreqI2QpJtd18AZoJbbuvE20FWhz371JyHE4rtyOb6wCydw2gsazntNYGLTxQMGD+aZZW4OgtvLjwacaKDKEn/doGTH4+GRJ4XU9Njt/RkHf3zUsR5RROxyP4nla+6a0jSlhHhN23plfV8RdGbhKbk+JNWKSKlGPUAOop9sFsKklPIMzw+T5ekyX2U87vSy6nkjUeJ8k4gkdzUGdOAktUo7SWhFibTm/N9Gm/y02obv8L3SYmZumZnEUlFsPzCXzAt5mYodFB84pRmk/GLd5mVLjfhr8HMJluTMsacywF1U1iSPYSe9/VvT1a0Jt2Ir7WBw4kmMg9SNjqKBNGGVQM/+PnV2/9omo/irS1/BTReo/zhfTQudbY/i0YxS7e+aGLLlpoSwl7qciNk6U5hCW/++z2sU7cPOiEGYM+m50utl2X1I9oxGFw4g/5o=
-      skip_existing: true
-      on:
-        condition: $TRAVIS_PYTHON_VERSION = "3.7"
-    - provider: script
-      script: "./deploy_anaconda.sh"
-      skip_cleanup: true
-      on:
-        condition: $TRAVIS_PYTHON_VERSION = "3.7"
+  - provider: pypi
+    distributions: sdist
+    user: controllerphl
+    password:
+      secure: PF3np0g8Mt9EFs56pJKv128YsrSukStAfwC0qjVZgwJejf2Yt8Bl8TR2jDghUAO+Aaeu7j5oOoRDfw6z2/GuO0iV/vwH/cfvxUnNdI9TsjzKWvm7RLubyHdW/LrzbPwXnz+1gQy6cJ+5OxCL9m9CFECz7J2nnHmOtD4ri8+5oStGfQcMvigIUvISbdCaM2XDtfoVdOZ9F/ukRNaKSdXC0FT5eDwiaj6SrCFhPSIEbBG+LuZODhreqI2QpJtd18AZoJbbuvE20FWhz371JyHE4rtyOb6wCydw2gsazntNYGLTxQMGD+aZZW4OgtvLjwacaKDKEn/doGTH4+GRJ4XU9Njt/RkHf3zUsR5RROxyP4nla+6a0jSlhHhN23plfV8RdGbhKbk+JNWKSKlGPUAOop9sFsKklPIMzw+T5ekyX2U87vSy6nkjUeJ8k4gkdzUGdOAktUo7SWhFibTm/N9Gm/y02obv8L3SYmZumZnEUlFsPzCXzAt5mYodFB84pRmk/GLd5mVLjfhr8HMJluTMsacywF1U1iSPYSe9/VvT1a0Jt2Ir7WBw4kmMg9SNjqKBNGGVQM/+PnV2/9omo/irS1/BTReo/zhfTQudbY/i0YxS7e+aGLLlpoSwl7qciNk6U5hCW/++z2sU7cPOiEGYM+m50utl2X1I9oxGFw4g/5o=
+    skip_existing: true
+    on:
+      # tags: true
+      condition: $TRAVIS_PYTHON_VERSION = "3.7"
+  - provider: script
+    script: "./deploy_anaconda.sh"
+    skip_cleanup: true
+    on:
+      # tags: true
+      condition: $TRAVIS_PYTHON_VERSION = "3.7"
