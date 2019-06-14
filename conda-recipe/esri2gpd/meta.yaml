@@ -1,4 +1,4 @@
-{% set name = "carto2gpd" %}
+{% set name = "esri2gpd" %}
 {% set version = environ.get("TRAVIS_TAG", "") %}
 
 package:
@@ -6,7 +6,7 @@ package:
   version: "{{ version }}"
 
 source:
-  git_url: https://github.com/PhiladelphiaController/carto2gpd.git
+  git_url: https://github.com/PhiladelphiaController/esri2gpd.git
   git_rev: {{ version }}
 
 build:
@@ -29,13 +29,13 @@ requirements:
 
 test:
   imports:
-    - carto2gpd
+    - esri2gpd
 
 about:
-  home: https://github.com/PhiladelphiaController/carto2gpd
+  home: https://github.com/PhiladelphiaController/esri2gpd
   license: MIT
   license_family: MIT
-  summary: A Python utility to query a CARTO database and return a geopandas GeoDataFrame
+  summary: Scrape features from the ArcGIS Server REST API and return a geopandas GeoDataFrame
 
 extra:
   recipe-maintainers:
