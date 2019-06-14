@@ -1,0 +1,42 @@
+{% set name = "arcgis2geojson" %}
+{% set version = "1.5.0" %}
+
+package:
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 95f42cd835bbeddfc4a7fb43a84f10f258806a86bd7da67d8ee34d1e04e870b3
+
+build:
+  number: 0
+  entry_points:
+    - arcgis2geojson = arcgis2geojson:main
+  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv "
+
+requirements:
+  host:
+    - pip
+    - python
+    - six
+  run:
+    - python
+    - six
+
+test:
+  commands:
+    - arcgis2geojson --help
+
+about:
+  home: https://github.com/chris48s/arcgis2geojson/
+  license: MIT
+  license_family: MIT
+  license_file: 
+  summary: A Python library for converting ArcGIS JSON to GeoJSON
+  doc_url: 
+  dev_url: 
+
+extra:
+  recipe-maintainers:
+    - PhiladelphiaController

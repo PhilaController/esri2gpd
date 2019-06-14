@@ -12,12 +12,21 @@ def find_version(path):
     raise RuntimeError("Version not found")
 
 
+def get_requirements(filename):
+    with open(filename, "r") as fh:
+        return [l.strip() for l in fh]
+
+
 setup(
     name="esri2gpd",
+    packages=["esri2gpd"],
     version=find_version("esri2gpd/__init__.py"),
     author="Nick Hand",
     maintainer="Nick Hand",
     maintainer_email="nick.hand@phila.gov",
-    description="A Python utility to scrape features from the ArcGIS Server REST API and return a geopandas GeoDataFrame",
+    description="Scrape features from the ArcGIS Server REST API and return a geopandas GeoDataFrame",
     license="MIT",
+    python_requires=">=3.6",
+    install_requires=get_requirements("requirements.txt"),
+    extras_require={"dev": get_requirements("requirements.dev.txt")},
 )

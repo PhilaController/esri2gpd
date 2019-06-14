@@ -1,0 +1,42 @@
+{% set name = "carto2gpd" %}
+{% set version = environ.get("TRAVIS_TAG", "") %}
+
+package:
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
+
+source:
+  git_url: https://github.com/PhiladelphiaController/carto2gpd.git
+  git_rev: {{ version }}
+
+build:
+  script_env: 
+    - TRAVIS_TAG
+  number: 0
+  script : python setup.py install
+
+requirements:
+  host:
+    - python
+    - requests
+    - geopandas
+
+  run:
+    - python
+    - requests
+    - geopandas
+    - arcgis2geojson
+
+test:
+  imports:
+    - carto2gpd
+
+about:
+  home: https://github.com/PhiladelphiaController/carto2gpd
+  license: MIT
+  license_family: MIT
+  summary: A Python utility to query a CARTO database and return a geopandas GeoDataFrame
+
+extra:
+  recipe-maintainers:
+    - PhiladelphiaController
