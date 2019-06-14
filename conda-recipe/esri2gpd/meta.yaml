@@ -20,6 +20,7 @@ requirements:
     - python
     - requests
     - geopandas
+    - arcgis2geojson
 
   run:
     - python
