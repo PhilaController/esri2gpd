@@ -24,7 +24,7 @@ install:
   - conda install -c conda-forge --yes --file requirements.txt
   - pip install .[dev]
 script:
-  - py.test . --cov carto2gpd
+  - py.test . --cov esri2gpd
 after_success:
   - coveralls
   - chmod +x deploy_anaconda.sh
