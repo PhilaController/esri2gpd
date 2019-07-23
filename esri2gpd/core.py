@@ -13,7 +13,7 @@ def _get_json_safely(response):
     """
     # bad status code
     if response.status_code != 200:
-        reponse.raise_for_status()
+        response.raise_for_status()
 
     json = response.json()  # get the JSON
     if "error" in json:
