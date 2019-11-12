@@ -18,9 +18,11 @@ before_install:
   - chmod +x miniconda.sh
   - "./miniconda.sh -b -p $HOME/miniconda"
   - export PATH=$HOME/miniconda/bin:$PATH
-  - conda update --yes conda
+  - conda config --set auto_update_conda False
 install:
-  - conda install --yes python=$TRAVIS_PYTHON_VERSION conda-build jinja2 anaconda-client
+  - conda install --yes python=$TRAVIS_PYTHON_VERSION conda-build "conda=4.7.10" jinja2 anaconda-client
+  - conda install --yes --file requirements.txt
+  - conda info
   - pip install .[dev]
 script:
   - py.test . --cov esri2gpd
