@@ -21,6 +21,7 @@ before_install:
   - conda config --set auto_update_conda False
 install:
   - conda install --yes python=$TRAVIS_PYTHON_VERSION conda-build "conda=4.7.10" jinja2 anaconda-client
+  - pip install arcgis2geojson
   - conda install --yes --file requirements.txt
   - conda info
   - pip install .[dev]
