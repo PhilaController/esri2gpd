@@ -1,6 +1,4 @@
-import os
 import requests
-import urllib
 from arcgis2geojson import arcgis2geojson
 import geopandas as gpd
 import pandas as pd
@@ -57,13 +55,9 @@ def get(url, fields=None, where=None, limit=None):
         fields = ", ".join(fields)
 
     # extract object IDs of features
-    queryURL = os.path.join(url, "query")
+    queryURL = f"{url}/query"
     params = dict(where=where, returnIdsOnly="true", f="json")
-    response = requests.get(
-        queryURL,
-        params=urllib.parse.urlencode(params, quote_via=urllib.parse.quote),
-        headers={"Content-Type": "application/json;charset=UTF-8"},
-    )
+    response = requests.get(queryURL, params=params)
 
     # get the object IDs safely
     json = _get_json_safely(response)
@@ -87,11 +81,7 @@ def get(url, fields=None, where=None, limit=None):
         )
 
         # get raw features
-        response = requests.get(
-            queryURL,
-            params=urllib.parse.urlencode(params, quote_via=urllib.parse.quote),
-            headers={"Content-Type": "application/json;charset=UTF-8"},
-        )
+        response = requests.get(queryURL, params=params)
         json = _get_json_safely(response)
 
         # convert to GeoJSON and save
