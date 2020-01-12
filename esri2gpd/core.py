@@ -3,6 +3,7 @@ from arcgis2geojson import arcgis2geojson
 import geopandas as gpd
 import pandas as pd
 import numpy as np
+import warnings
 
 
 def _get_json_safely(response):
@@ -46,6 +47,10 @@ def get(url, fields=None, where=None, limit=None):
     >>> gdf = esri2gpd.get(url, fields=['MAPNAME'], where="MAPNAME='Chestnut Hill'")
     >>> gdf
     """
+    # Get the max record count
+    metadata = requests.get(url, params=dict(f="pjson")).json()
+    max_record_count = metadata["maxRecordCount"]
+
     # default behavior matches all features
     if where is None:
         where = "1=1"
@@ -56,29 +61,34 @@ def get(url, fields=None, where=None, limit=None):
 
     # extract object IDs of features
     queryURL = f"{url}/query"
-    params = dict(where=where, returnIdsOnly="true", f="json")
+
+    # Get the total record count
+    params = dict(where=where, returnCountOnly="true", f="json")
     response = requests.get(queryURL, params=params)
+    total_size = _get_json_safely(response)["count"]
 
-    # get the object IDs safely
-    json = _get_json_safely(response)
-    ids = json["objectIds"]
-
-    # impose the limit
+    # Check the limit
     if limit is not None:
-        ids = ids[:limit]
+        total_size = limit
 
-    # query in batches
-    out = []
-    batch_size = 100
-    for sub_ids in np.array_split(ids, len(ids) // batch_size + 1):
+    # params for this request
+    resultOffset = 0
+    params = dict(
+        f="json", outSR="4326", outFields=fields, resultOffset=resultOffset, where=where
+    )
 
-        # params for this request
-        params = dict(
-            objectIds=", ".join(map(str, sub_ids)),
-            f="json",
-            outSR="4326",
-            outFields=fields,
+    calls = total_size // max_record_count
+    if calls > 10:
+        warnings.warn(
+            f"Long download time — total download will require {calls} separate requests"
         )
+
+    out = []
+    while params["resultOffset"] < total_size:
+
+        remaining = total_size - params["resultOffset"]
+        if remaining < max_record_count:
+            params["resultRecordCount"] = remaining
 
         # get raw features
         response = requests.get(queryURL, params=params)
@@ -87,5 +97,7 @@ def get(url, fields=None, where=None, limit=None):
         # convert to GeoJSON and save
         geojson = [arcgis2geojson(f) for f in json["features"]]
         out.append(gpd.GeoDataFrame.from_features(geojson, crs={"init": "epsg:4326"}))
+
+        params["resultOffset"] += len(out[-1])
 
     return pd.concat(out, axis=0).reset_index(drop=True)
