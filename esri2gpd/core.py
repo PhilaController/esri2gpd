@@ -1,9 +1,10 @@
+import warnings
+
+import geopandas as gpd
+import numpy as np
+import pandas as pd
 import requests
 from arcgis2geojson import arcgis2geojson
-import geopandas as gpd
-import pandas as pd
-import numpy as np
-import warnings
 
 
 def _get_json_safely(response):
@@ -22,7 +23,7 @@ def _get_json_safely(response):
     return json
 
 
-def get(url, fields=None, where=None, limit=None):
+def get(url, fields=None, where=None, limit=None, **kwargs):
     """
     Scrape features from a ArcGIS Server REST API and return a
     geopandas GeoDataFrame.
@@ -74,7 +75,12 @@ def get(url, fields=None, where=None, limit=None):
     # params for this request
     resultOffset = 0
     params = dict(
-        f="json", outSR="4326", outFields=fields, resultOffset=resultOffset, where=where
+        f="json",
+        outSR="4326",
+        outFields=fields,
+        resultOffset=resultOffset,
+        where=where,
+        **kwargs,
     )
 
     calls = total_size // max_record_count
@@ -96,7 +102,11 @@ def get(url, fields=None, where=None, limit=None):
 
         # convert to GeoJSON and save
         geojson = [arcgis2geojson(f) for f in json["features"]]
-        out.append(gpd.GeoDataFrame.from_features(geojson, crs={"init": "epsg:4326"}))
+        if gpd.__version__ >= "0.7":
+            gdf = gpd.GeoDataFrame.from_features(geojson, crs="EPSG:4326")
+        else:
+            gdf = gpd.GeoDataFrame.from_features(geojson, crs={"init": "epsg:4326"})
+        out.append(gdf)
 
         params["resultOffset"] += len(out[-1])
 
