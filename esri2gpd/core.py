@@ -44,8 +44,8 @@ def get(url, fields=None, where=None, limit=None, **kwargs):
     Example
     -------
     >>> import esri2gpd
-    >>> url = "https://services.arcgis.com/fLeGjb7u4uXqeF9q/ArcGIS/rest/services/Philly_Neighborhoods/FeatureServer/0"
-    >>> gdf = esri2gpd.get(url, fields=['MAPNAME'], where="MAPNAME='Chestnut Hill'")
+    >>> url = "https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Philadelphia_ZCTA_2018/FeatureServer/0"
+    >>> gdf = esri2gpd.get(url, fields=['zip_code'], where="zip_code=19123")
     >>> gdf
     """
     # Get the max record count
