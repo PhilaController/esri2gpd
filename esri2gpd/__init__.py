@@ -1,2 +1,5 @@
-__version__ = "1.0.7"
+from importlib.metadata import version
+
 from .core import get
+
+__version__ = version(__package__)

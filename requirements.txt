@@ -1,3 +1,0 @@
-requests
-geopandas
-arcgis2geojson

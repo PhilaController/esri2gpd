@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "esri2gpd"
+version = "1.0.7"
+description = "Scrape features from the ArcGIS Server REST API and return a geopandas GeoDataFrame"
+authors = ["Nick Hand <nick.hand@phila.gov>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+geopandas = "^0.10.1"
+requests = "^2.26.0"
+arcgis2geojson = "^2.0.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+pytest-cov = "^3.0.0"
+coveralls = "^3.2.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
