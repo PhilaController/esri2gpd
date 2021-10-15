@@ -1,5 +1,5 @@
 {% set name = "esri2gpd" %}
-{% set version = environ.get("TRAVIS_TAG", "") %}
+{% set version = environ.get("LATEST_VERSION", "") %}
 
 package:
   name: "{{ name|lower }}"
@@ -11,9 +11,9 @@ source:
 
 build:
   script_env: 
-    - TRAVIS_TAG
+    - LATEST_VERSION
   number: 0
-  script : python setup.py install
+  script : pip install .
 
 requirements:
   host:
@@ -21,6 +21,7 @@ requirements:
     - requests
     - geopandas
     - arcgis2geojson
+    - poetry
 
   run:
     - python

@@ -32,20 +32,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  upload-pypi:
-    needs: test
-    runs-on: "ubuntu-latest"
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: "3.8"
-      - name: Run image
-        uses: abatilo/actions-poetry@v2.0.0
-        with:
-          poetry-version: "1.1.11"
-      - name: Upload to PyPI
-        run: poetry publish --build --username __token__ --password ${{ secrets.PYPI_API_TOKEN }}
+  # upload-pypi:
+  #   needs: test
+  #   runs-on: "ubuntu-latest"
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/setup-python@v2
+  #       with:
+  #         python-version: "3.8"
+  #     - name: Run image
+  #       uses: abatilo/actions-poetry@v2.0.0
+  #       with:
+  #         poetry-version: "1.1.11"
+  #     - name: Upload to PyPI
+  #       run: poetry publish --build --username __token__ --password ${{ secrets.PYPI_API_TOKEN }}
 
   upload-conda:
     needs: test
