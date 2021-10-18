@@ -5,11 +5,14 @@ import numpy as np
 import pandas as pd
 import requests
 from arcgis2geojson import arcgis2geojson
+from pkg_resources import packaging
+
+GEOPANDAS_VERSION = packaging.version.parse(gpd.__version__)
 
 
 def _get_json_safely(response):
     """
-    Check for JSON response errors, and if all clear, 
+    Check for JSON response errors, and if all clear,
     return the JSON data
     """
     # bad status code
@@ -33,10 +36,10 @@ def get(url, fields=None, where=None, limit=None, **kwargs):
     url : str
         the REST API url for the Feature Service
     fields : list of str, optional
-        the list of fields to include; the default behavior ('None') 
+        the list of fields to include; the default behavior ('None')
         returns all fields
     where : str, optional
-        a string specifying the selection clause to select a subset of 
+        a string specifying the selection clause to select a subset of
         data; the default behavior ('None') selects all data
     limit : int, optional
         limit the returned data to this many features
@@ -102,7 +105,7 @@ def get(url, fields=None, where=None, limit=None, **kwargs):
 
         # convert to GeoJSON and save
         geojson = [arcgis2geojson(f) for f in json["features"]]
-        if gpd.__version__ >= "0.7":
+        if GEOPANDAS_VERSION >= packaging.version.parse("0.7"):
             gdf = gpd.GeoDataFrame.from_features(geojson, crs="EPSG:4326")
         else:
             gdf = gpd.GeoDataFrame.from_features(geojson, crs={"init": "epsg:4326"})
