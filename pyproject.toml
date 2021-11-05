@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "esri2gpd"
-version = "1.0.10"
+version = "1.0.11"
 description = "Scrape features from the ArcGIS Server REST API and return a geopandas GeoDataFrame"
 authors = ["Nick Hand <nick.hand@phila.gov>"]
 license = "MIT"
