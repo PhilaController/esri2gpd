@@ -26,7 +26,7 @@ def _get_json_safely(response):
     return json
 
 
-def get(url, fields=None, where=None, limit=None, **kwargs):
+def get(url, fields=None, where=None, limit=None, max_record_count=None, **kwargs):
     """
     Scrape features from a ArcGIS Server REST API and return a
     geopandas GeoDataFrame.
@@ -53,7 +53,9 @@ def get(url, fields=None, where=None, limit=None, **kwargs):
     """
     # Get the max record count
     metadata = requests.get(url, params=dict(f="pjson")).json()
-    max_record_count = metadata["maxRecordCount"]
+
+    if not max_record_count:
+        max_record_count = metadata["maxRecordCount"]
 
     # default behavior matches all features
     if where is None:
