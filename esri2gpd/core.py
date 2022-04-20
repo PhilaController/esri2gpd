@@ -96,15 +96,13 @@ def get(url, fields=None, where=None, limit=None, max_record_count=None, **kwarg
         )
 
     out = []
+
     while params["resultOffset"] < total_size:
 
         remaining = total_size - params["resultOffset"]
-        if remaining < max_record_count:
-            params["resultRecordCount"] = remaining
+        params["resultRecordCount"] = min(remaining, max_record_count)
 
-        # get raw features
-        response = requests.get(queryURL, params=params)
-        json = _get_json_safely(response)
+        json = _get_json_safely(requests.get(queryURL, params=params))
 
         # convert to GeoJSON and save
         geojson = [arcgis2geojson(f) for f in json["features"]]
