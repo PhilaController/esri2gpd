@@ -11,6 +11,7 @@ geopandas = "^0.10.1"
 requests = "^2.26.0"
 arcgis2geojson = "^2.0.1"
 importlib-metadata = "^4.8.1"
+tenacity= "^8.0.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"

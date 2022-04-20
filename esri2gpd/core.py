@@ -4,12 +4,13 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 import requests
+from tenacity import retry
 from arcgis2geojson import arcgis2geojson
 from pkg_resources import packaging
 
 GEOPANDAS_VERSION = packaging.version.parse(gpd.__version__)
 
-
+@retry
 def _get_json_safely(response):
     """
     Check for JSON response errors, and if all clear,
