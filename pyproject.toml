@@ -6,11 +6,11 @@ authors = ["Nick Hand <nick.hand@phila.gov>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.7.1"
-geopandas = "^0.10.1"
-requests = "^2.26.0"
+python = ">=3.8,<4.0.0"
+requests = ">=2,<3"
+geopandas = ">=0.6"
 arcgis2geojson = "^2.0.1"
-importlib-metadata = "^4.8.1"
+
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
